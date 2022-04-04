@@ -12,6 +12,12 @@ use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Config;
 use Phalcon\Events\Event;
 use Phalcon\Events\Manager as EventsManager;
+
+use Phalcon\Translate\Adapter\NativeArray;
+use Phalcon\Translate\InterpolatorFactory;
+use Phalcon\Translate\TranslateFactory;
+use App\Component\Locale;
+
 require("../vendor/autoload.php");
 $config = new Config([]);
 
@@ -26,6 +32,8 @@ $loader->registerDirs(
     [
         APP_PATH . "/controllers/",
         APP_PATH . "/models/",
+        APP_PATH . "/listeners/",
+        APP_PATH . "/component/",
     ]
 );
 
@@ -33,13 +41,16 @@ $loader->registerDirs(
 //this should be before loader->register
 $loader->registerNamespaces(
     [
-        'App\Listeners' => APP_PATH . '/listeners'
+        'App\Listeners' => APP_PATH . '/listeners',
+        'App\Component' => APP_PATH . '/component'
     ]
 );
 
 $loader->register();
 
 $container = new FactoryDefault();
+
+
 
 $container->set(
     'view',
@@ -50,6 +61,8 @@ $container->set(
     }
 );
 
+
+
 $container->set(
     'url',
     function () {
@@ -59,7 +72,9 @@ $container->set(
     }
 );
 
+
 $application = new Application($container);
+
 
 
 
@@ -73,11 +88,13 @@ $container->set(
                 'username' => 'root',
                 'password' => 'secret',
                 'dbname'   => 'store',
-                ]
-            );
-        }
+            ]
+        );
+    }
 );
 
+
+$container->set('locale', (new Locale())->getTranslator());
 // $container->set(
 //     'mongo',
 //     function () {

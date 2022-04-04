@@ -7,7 +7,7 @@ use Phalcon\Security\JWT\Token\Parser;
 use Phalcon\Security\JWT\Validator;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-
+use MyApp\Locale;
 
 class SignupController extends Controller
 {
