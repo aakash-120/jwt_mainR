@@ -83,9 +83,7 @@ class SecureController extends Controller
         }
         print_r($newArr);
 
-
         echo "after PV";
-
 
         foreach ($newArr as $k7 => $v7) {
             print_r($k7);
