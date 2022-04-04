@@ -3,11 +3,12 @@
 namespace App\Listeners;
 
 use Phalcon\Events\Event;
-use Settings;
 use Phalcon\Security\JWT\Builder;
 use Phalcon\Security\JWT\Signer\Hmac;
 use Phalcon\Security\JWT\Token\Parser;
 use Phalcon\Security\JWT\Validator;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class notificationListeners
 {
@@ -86,44 +87,79 @@ class notificationListeners
     // }
 
 
+    // public function beforeHandleRequest(Event $event, \Phalcon\Mvc\Application $application)
+    // {
+    //     //yha par hme url poora dena padega chahe wo index ki file hi ho
+    //     $aclfile = APP_PATH . '/security/acl.cache';
+
+    //     if (is_file($aclfile) == true) {
+    //         $acl = unserialize(
+    //             file_get_contents($aclfile)
+    //         );
+
+    //         $bearer = $application->request->get('bearer');
+    //         $controller = $application->router->getControllerName();
+    //         $action = $application->router->getActionName();
+    //         if ($bearer) {
+    //             try {
+    //                 $parser = new Parser();
+    //                 $tokenObject = $parser->parse($bearer);
+    //                 $now = new \DateTimeImmutable();
+    //                 $expire = $now->getTimestamp();
+    //                 // $expire=$now->modify('+1 day')->getTimestamp();
+    //                 $validator = new Validator($tokenObject, 100);
+    //                 $validator->validateExpiration($expire);
+    //                 $claims = $tokenObject->getClaims()->getPayload();
+    //                 $role = $claims['sub'];
+    //                 // echo $role;
+    //                 // die;
+    //                 $controller = $application->router->getControllerName();
+    //                 $action = $application->router->getActionName();
+    //                 echo $controller;
+    //                 echo "after controller<br>";
+    //                 echo $action;
+                
+    //                 if (!$role || true !== $acl->isAllowed($role, $controller, $action)) {
+    //                     echo "access denied";
+    //                     die();
+    //                 }
+    //             } catch (\Exception $e) {
+    //                 $e->getMessage();
+    //             }
+    //         } else {
+    //             echo "token not provided";
+    //             die;
+    //         }
+    //     } else {
+    //         echo "No ACL";
+    //         die();
+    //     }
+    // }
+
+
     public function beforeHandleRequest(Event $event, \Phalcon\Mvc\Application $application)
     {
-        //yha par hme url poora dena padega chahe wo index ki file hi ho
         $aclfile = APP_PATH . '/security/acl.cache';
-
         if (is_file($aclfile) == true) {
             $acl = unserialize(
                 file_get_contents($aclfile)
             );
 
             $bearer = $application->request->get('bearer');
-            $controller = $application->router->getControllerName();
-            $action = $application->router->getActionName();
             if ($bearer) {
                 try {
-                    $parser = new Parser();
-                    $tokenObject = $parser->parse($bearer);
-                    $now = new \DateTimeImmutable();
-                    $expire = $now->getTimestamp();
-                    // $expire=$now->modify('+1 day')->getTimestamp();
-                    $validator = new Validator($tokenObject, 100);
-                    $validator->validateExpiration($expire);
-                    $claims = $tokenObject->getClaims()->getPayload();
-                    $role = $claims['sub'];
-                    // echo $role;
-                    // die;
+                    $key = "example_key";
+                    $decoded = JWT::decode($bearer, new Key($key, 'HS256'));
+                    $role = $decoded->role;
                     $controller = $application->router->getControllerName();
                     $action = $application->router->getActionName();
-                    echo $controller;
-                    echo "after controller<br>";
-                    echo $action;
-                
                     if (!$role || true !== $acl->isAllowed($role, $controller, $action)) {
                         echo "access denied";
                         die();
                     }
                 } catch (\Exception $e) {
                     $e->getMessage();
+                    die;
                 }
             } else {
                 echo "token not provided";
