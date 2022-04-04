@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-server
--- Generation Time: Apr 01, 2022 at 05:03 AM
+-- Generation Time: Apr 04, 2022 at 07:01 AM
 -- Server version: 8.0.19
 -- PHP Version: 7.4.1
 
@@ -38,7 +38,7 @@ CREATE TABLE `alloweds` (
 --
 
 INSERT INTO `alloweds` (`id`, `controllerAction`) VALUES
-(1, '{\"role\": \"1\", \"submit\": \"Submit\", \"OrderController_add\": \"1\", \"IndexController_index\": \"1\", \"OrderController_index\": \"1\", \"ProductController_add\": \"1\", \"SecureController_index\": \"1\", \"OrderController_addtodb\": \"1\", \"ProductController_index\": \"1\", \"SecureController_addrole\": \"1\", \"SecureController_addtodb\": \"1\", \"ProductController_addtodb\": \"1\", \"SecureController_BuildACL\": \"1\", \"SecureController_components\": \"1\", \"SecureController_allowedaddtodb\": \"1\", \"SecureController_allowcomponents\": \"1\", \"SecureController_componentsaddtodb\": \"1\"}');
+(1, '{\"role\": \"1\", \"submit\": \"Submit\", \"OrderController_add\": \"1\", \"TestController_index\": \"1\", \"IndexController_index\": \"1\", \"OrderController_index\": \"1\", \"ProductController_add\": \"1\", \"TestController_signup\": \"1\", \"SecureController_index\": \"1\", \"SignupController_index\": \"1\", \"OrderController_addtodb\": \"1\", \"ProductController_index\": \"1\", \"SettingController_index\": \"1\", \"SignupController_signup\": \"1\", \"SecureController_addrole\": \"1\", \"SecureController_addtodb\": \"1\", \"SettingController_update\": \"1\", \"ProductController_addtodb\": \"1\", \"SecureController_BuildACL\": \"1\", \"SecureController_components\": \"1\", \"SecureController_allowedaddtodb\": \"1\", \"SecureController_allowcomponents\": \"1\", \"SecureController_componentsaddtodb\": \"1\"}');
 
 -- --------------------------------------------------------
 
@@ -168,6 +168,28 @@ CREATE TABLE `settings` (
 INSERT INTO `settings` (`Title_Optimization`, `Default_price`, `Default_Stock`, `Default_Zipcode`, `ID`) VALUES
 ('with_tags', '50', '50', '50', 1);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `role` varchar(100) NOT NULL,
+  `token` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `token`) VALUES
+(5, 'aakash', 'aastha@gmail.com', '1', 'admin', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImN0eSI6ImFwcGxpY2F0aW9uXC9qc29uIn0.eyJhdWQiOlsiaHR0cHM6XC9cL3RhcmdldC5waGFsY29uLmlvIl0sImV4cCI6MTY0OTE0MDcxMywianRpIjoiYWJjZDEyMzQ1Njc4OSIsImlhdCI6MTY0OTA1NDMxMywiaXNzIjoiaHR0cHM6XC9cL3BoYWxjb24uaW8iLCJuYmYiOjE2NDkwNTQyNTMsInN1YiI6ImFkbWluIn0.LLrthXmE92ha7BO5fbAqwXmUHCpeYf_jxO7x8DMKsqFqFLdvDPLM9Ra6jCLyTMtLGc8Q2T4fQmeaTEwI8GQuUA');
+
 --
 -- Indexes for dumped tables
 --
@@ -209,6 +231,12 @@ ALTER TABLE `settings`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -247,6 +275,12 @@ ALTER TABLE `roles`
 --
 ALTER TABLE `settings`
   MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
